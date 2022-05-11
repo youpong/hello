@@ -1,22 +1,32 @@
 CFLAGS = -Wall -Wextra -std=c17 -g
 CPPFLAGS = -I.
 LDFLAGS =
+INSTALL = install
 
 TARGET = hello
-OBJS = $(TARGET).o
+SRCS = $(TARGET).c
+OBJS = $(SRCS:%c=%o)
 LANGUAGES = ja fr
+
+LOCALEDIR = locale
 
 POTFILE = po/$(TARGET).pot
 POFILES = $(addsuffix .po, $(addprefix po/, $(LANGUAGES)))
 MOFILES = $(POFILES:%.po=%.mo)
 
-.PHONY: all clean potfile pofiles mofiles
+.PHONY: all build clean potfile pofiles mofiles
 .PRECIOUS: po/%.po
 
-all: $(TARGET) $(POTFILE) $(MOFILES)
+all: $(TARGET) $(MOFILES)
+
+build: all
+	for lang in $(LANGUAGES); do \
+		$(INSTALL) -D po/$$lang.mo $(LOCALEDIR)/$$lang/LC_MESSAGES/$(TARGET).mo ;\
+	done
 
 clean:
-	rm -f $(TARGET) $(OBJS) $(MOFILES)
+	rm -f  $(TARGET) $(OBJS) $(MOFILES)
+	rm -rf $(LOCALEDIR)
 
 $(TARGET): $(OBJS)
 	$(CC) -o $@ $< $(LDFLAGS)
@@ -25,14 +35,14 @@ $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< 
 
 potfile: $(POTFILE)
+pofiles: $(POFILES)
+mofiles: $(MOFILES)
 
-$(POTFILE): $(TARGET).c Makefile
+$(POTFILE): $(SRCS) Makefile
 	xgettext --keyword=_ --language=C --add-comments --sort-output -o $@ $^
 	sed -i -e 's/\(Project-Id-Version\): PACKAGE VERSION/\1: Hello 1.0/' \
 	       -e 's/\(Report-Msgid-Bugs-To\): /\1: youpong@cpan.org/' \
 	       -e 's|\(Content-Type: text/plain\); charset=CHARSET|\1; charset=UTF-8|' $@
-
-pofiles: $(POFILES)
 
 po/%.po: $(POTFILE)
 	if [ ! -f $@ ]; then \
@@ -41,9 +51,5 @@ po/%.po: $(POTFILE)
 		msgmerge --update $@ $< ; \
 	fi
 
-mofiles: $(MOFILES)
-
 %.mo: %.po
 	msgfmt --output-file=$@ $<
-
-
