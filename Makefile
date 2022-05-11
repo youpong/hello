@@ -8,8 +8,11 @@ TARGET = hello
 
 all: $(TARGET) po/$(TARGET).pot locale/fr/LC_MESSAGES/$(TARGET).mo locale/ja/LC_MESSAGES/$(TARGET).mo
 
-$(TARGET): $(TARGET).c
-	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ $< $(LDFLAGS)
+$(TARGET): $(TARGET).o
+	$(CC) -o $@ $< $(LDFLAGS)
+
+$(TARGET).o: $(TARGET).c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< 
 
 po/$(TARGET).pot: hello.c
 	xgettext --keyword=_ --language=C --add-comments --sort-output -o $@ hello.c
@@ -27,4 +30,4 @@ locale/ja/LC_MESSAGES/$(TARGET).mo: po/ja/$(TARGET).po
 	msgfmt --output-file=$@ $<
 
 clean:
-	rm -f $(TARGET) locale/fr/LC_MESSAGES/*.mo locale/ja/LC_MESSAGES/*.mo
+	rm -f $(TARGET) *.o locale/fr/LC_MESSAGES/*.mo locale/ja/LC_MESSAGES/*.mo
