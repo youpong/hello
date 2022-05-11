@@ -3,20 +3,22 @@ CPPFLAGS = -I.
 LDFLAGS =
 
 TARGET = hello
+OBJS = $(TARGET).o
 LANGUAGES = ja fr
 
 POTFILE = po/$(TARGET).pot
-POFILES = $(addsuffix /$(TARGET).po, $(addprefix po/, $(LANGUAGES)))
-MOFILES = $(addsuffix /LC_MESSAGES/$(TARGET).mo, $(addprefix locale/, $(LANGUAGES)))
+POFILES = $(addsuffix .po, $(addprefix po/, $(LANGUAGES)))
+MOFILES = $(POFILES:%.po=%.mo)
 
 .PHONY: all clean potfile pofiles mofiles
+.PRECIOUS: po/%.po
 
 all: $(TARGET) $(POTFILE) $(MOFILES)
 
 clean:
-	rm -f $(TARGET) *.o $(MOFILES)
+	rm -f $(TARGET) $(OBJS) $(MOFILES)
 
-$(TARGET): $(TARGET).o
+$(TARGET): $(OBJS)
 	$(CC) -o $@ $< $(LDFLAGS)
 
 .c.o:
@@ -32,11 +34,16 @@ $(POTFILE): $(TARGET).c Makefile
 
 pofiles: $(POFILES)
 
-po/%/$(TARGET).po: $(POTFILE)
-	msgmerge --update $@ $<
+po/%.po: $(POTFILE)
+	if [ ! -f $@ ]; then \
+		msginit --input=$< --output=$@ --locale=$* --no-translator ; \
+	else \
+		msgmerge --update $@ $< ; \
+	fi
 
 mofiles: $(MOFILES)
 
-locale/%/LC_MESSAGES/$(TARGET).mo: po/%/$(TARGET).po
+%.mo: %.po
 	msgfmt --output-file=$@ $<
+
 
