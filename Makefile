@@ -25,10 +25,7 @@ po/$(TARGET).pot: hello.c Makefile
 
 pofiles: $(addsuffix /$(TARGET).po, $(addprefix po/, $(LANGUAGES)))
 
-po/fr/$(TARGET).po: po/$(TARGET).pot
-	msgmerge --update $@ $<
-
-po/ja/$(TARGET).po: po/$(TARGET).pot
+po/%/$(TARGET).po: po/$(TARGET).pot
 	msgmerge --update $@ $<
 
 locale/fr/LC_MESSAGES/$(TARGET).mo: po/fr/$(TARGET).po
