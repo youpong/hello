@@ -11,7 +11,7 @@ all: $(TARGET) po/$(TARGET).pot locale/fr/LC_MESSAGES/$(TARGET).mo locale/ja/LC_
 $(TARGET): $(TARGET).o
 	$(CC) -o $@ $< $(LDFLAGS)
 
-$(TARGET).o: $(TARGET).c
+.c.o:
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< 
 
 po/$(TARGET).pot: hello.c
