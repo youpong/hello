@@ -5,9 +5,11 @@ LDFLAGS =
 TARGET = hello
 LANGUAGES = ja fr
 
+MOFILES = $(addsuffix /LC_MESSAGES/$(TARGET).mo, $(addprefix locale/, $(LANGUAGES)))
+
 .PHONY: all clean pot pofiles mofiles
 
-all: $(TARGET) po/$(TARGET).pot locale/fr/LC_MESSAGES/$(TARGET).mo locale/ja/LC_MESSAGES/$(TARGET).mo
+all: $(TARGET) po/$(TARGET).pot $(MOFILES)
 
 $(TARGET): $(TARGET).o
 	$(CC) -o $@ $< $(LDFLAGS)
@@ -28,11 +30,11 @@ pofiles: $(addsuffix /$(TARGET).po, $(addprefix po/, $(LANGUAGES)))
 po/%/$(TARGET).po: po/$(TARGET).pot
 	msgmerge --update $@ $<
 
-mofiles: $(addsuffix /LC_MESSAGES/$(TARGET).mo, $(addprefix locale/, $(LANGUAGES)))
+mofiles: $(MOFILES)
 
 locale/%/LC_MESSAGES/$(TARGET).mo: po/%/$(TARGET).po
 	msgfmt --output-file=$@ $<
 
 clean:
-	rm -f $(TARGET) *.o locale/fr/LC_MESSAGES/*.mo locale/ja/LC_MESSAGES/*.mo
+	rm -f $(TARGET) *.o $(MOFILES)
 
