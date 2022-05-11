@@ -28,10 +28,7 @@ pofiles: $(addsuffix /$(TARGET).po, $(addprefix po/, $(LANGUAGES)))
 po/%/$(TARGET).po: po/$(TARGET).pot
 	msgmerge --update $@ $<
 
-locale/fr/LC_MESSAGES/$(TARGET).mo: po/fr/$(TARGET).po
-	msgfmt --output-file=$@ $<
-
-locale/ja/LC_MESSAGES/$(TARGET).mo: po/ja/$(TARGET).po
+locale/%/LC_MESSAGES/$(TARGET).mo: po/fr/$(TARGET).po
 	msgfmt --output-file=$@ $<
 
 clean:
