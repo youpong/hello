@@ -3,8 +3,9 @@ CPPFLAGS = -I.
 LDFLAGS =
 
 TARGET = hello
+LANGUAGES = ja fr
 
-.PHONY: all clean pot
+.PHONY: all clean pot pofiles
 
 all: $(TARGET) po/$(TARGET).pot locale/fr/LC_MESSAGES/$(TARGET).mo locale/ja/LC_MESSAGES/$(TARGET).mo
 
@@ -22,6 +23,8 @@ po/$(TARGET).pot: hello.c Makefile
 	       -e 's/\(Report-Msgid-Bugs-To\): /\1: youpong@cpan.org/' \
 	       -e 's|\(Content-Type: text/plain\); charset=CHARSET|\1; charset=UTF-8|' $@
 
+pofiles: $(addsuffix /$(TARGET).po, $(addprefix po/, $(LANGUAGES)))
+
 po/fr/$(TARGET).po: po/$(TARGET).pot
 	msgmerge --update $@ $<
 
@@ -36,3 +39,4 @@ locale/ja/LC_MESSAGES/$(TARGET).mo: po/ja/$(TARGET).po
 
 clean:
 	rm -f $(TARGET) *.o locale/fr/LC_MESSAGES/*.mo locale/ja/LC_MESSAGES/*.mo
+
