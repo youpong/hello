@@ -18,9 +18,9 @@ pot: po/$(TARGET).pot
 
 po/$(TARGET).pot: hello.c Makefile
 	xgettext --keyword=_ --language=C --add-comments --sort-output -o $@ $^
-	sed -i 's/Project-Id-Version: PACKAGE VERSION/Project-Id-Version: Hello 1.0/' $@
-	sed -i 's/Report-Msgid-Bugs-To: /Report-Msgid-Bugs-To: youpong@cpan.org/' $@
-	sed -i 's|Content-Type: text/plain; charset=CHARSET|Content-Type: text/plain; charset=UTF-8|' $@
+	sed -i 's/\(Project-Id-Version\): PACKAGE VERSION/\1: Hello 1.0/' $@
+	sed -i 's/\(Report-Msgid-Bugs-To\): /\1: youpong@cpan.org/' $@
+	sed -i 's|\(Content-Type: text/plain\); charset=CHARSET|\1; charset=UTF-8|' $@
 
 po/fr/$(TARGET).po: po/$(TARGET).pot
 	msgmerge --update $@ $<
