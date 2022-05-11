@@ -4,7 +4,7 @@ LDFLAGS =
 
 TARGET = hello
 
-.PHONY: all clean
+.PHONY: all clean pot
 
 all: $(TARGET) po/$(TARGET).pot locale/fr/LC_MESSAGES/$(TARGET).mo locale/ja/LC_MESSAGES/$(TARGET).mo
 
@@ -14,8 +14,13 @@ $(TARGET): $(TARGET).o
 .c.o:
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< 
 
-po/$(TARGET).pot: hello.c
-	xgettext --keyword=_ --language=C --add-comments --sort-output -o $@ hello.c
+pot: po/$(TARGET).pot
+
+po/$(TARGET).pot: hello.c Makefile
+	xgettext --keyword=_ --language=C --add-comments --sort-output -o $@ $^
+	sed -i 's/Project-Id-Version: PACKAGE VERSION/Project-Id-Version: Hello 1.0/' $@
+	sed -i 's/Report-Msgid-Bugs-To: /Report-Msgid-Bugs-To: youpong@cpan.org/' $@
+	sed -i 's|Content-Type: text/plain; charset=CHARSET|Content-Type: text/plain; charset=UTF-8|' $@
 
 po/fr/$(TARGET).po: po/$(TARGET).pot
 	msgmerge --update $@ $<
