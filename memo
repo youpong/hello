@@ -6,3 +6,11 @@ locale     ja_JP.UTF-8 xx
            ja            xx
 Result     Success     x x
            Failure      x x
+
+# Primary
+        xgettext                 msginit                 msgfmt
+hello.c ----------> po/hello.pot -------> po/ja/hello.po -----> locale/ja/LC_MESSAGES/hello.mo
+
+# Update
+        xgettext -j              msgmerge                msgfmt
+hello.c ----------> po/hello.pot -------> po/ja/hello.po -----> locale/ja/LC_MESSAGES/hello.mo
