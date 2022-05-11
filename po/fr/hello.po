@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Hello 1.0\n"
 "Report-Msgid-Bugs-To: youpong@cpan.org\n"
-"POT-Creation-Date: 2022-05-11 14:39+0900\n"
+"POT-Creation-Date: 2022-05-11 20:09+0900\n"
 "PO-Revision-Date: 2022-05-11 14:42+0900\n"
 "Last-Translator: NAKAJIMA Yusaku <nakajimay@cpan.org>\n"
 "Language-Team: French\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: hello.c:12
-#, c-format
-msgid "Hello World\n"
-msgstr "Bonjour le monde\n"
+#: hello.c:17
+#, fuzzy, c-format
+msgid "Hello World!\n"
+msgstr "Bonjour le monde!\n"

@@ -14,6 +14,12 @@ $(TARGET): $(TARGET).c
 po/$(TARGET).pot: hello.c
 	xgettext --keyword=_ --language=C --add-comments --sort-output -o $@ hello.c
 
+po/fr/$(TARGET).po: po/$(TARGET).pot
+	msgmerge --update $@ $<
+
+po/ja/$(TARGET).po: po/$(TARGET).pot
+	msgmerge --update $@ $<
+
 locale/fr/LC_MESSAGES/$(TARGET).mo: po/fr/$(TARGET).po
 	msgfmt --output-file=$@ $<
 
