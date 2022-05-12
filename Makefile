@@ -1,8 +1,3 @@
-CFLAGS = -Wall -Wextra -std=c17 -g
-CPPFLAGS = -I.
-LDFLAGS =
-INSTALL = install
-
 TARGET = hello
 SRCS = $(TARGET).c
 OBJS = $(SRCS:c=o)
@@ -12,6 +7,11 @@ LOCALEDIR = locale
 POTFILE = po/$(TARGET).pot
 POFILES = $(addsuffix .po, $(addprefix po/, $(LANGUAGES)))
 MOFILES = $(POFILES:%.po=%.mo)
+
+CFLAGS = -Wall -Wextra -std=c17 -g
+CPPFLAGS = -I.
+LDFLAGS =
+INSTALL = install
 
 .PHONY: all build clean potfile pofiles mofiles
 .PRECIOUS: po/%.po
@@ -38,7 +38,7 @@ pofiles: $(POFILES)
 mofiles: $(MOFILES)
 
 $(POTFILE): $(SRCS) Makefile
-	xgettext --keyword=_ --language=C --add-comments --sort-output -o $@ $^
+	xgettext --keyword=_ --language=C --add-comments --sort-output --force-po -o $@ $^
 	sed -i -e 's/\(Project-Id-Version\): PACKAGE VERSION/\1: Hello 1.0/' \
 	       -e 's/\(Report-Msgid-Bugs-To\): /\1: youpong@cpan.org/' \
 	       -e 's|\(Content-Type: text/plain\); charset=CHARSET|\1; charset=UTF-8|' $@
