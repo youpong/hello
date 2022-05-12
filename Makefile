@@ -5,11 +5,10 @@ INSTALL = install
 
 TARGET = hello
 SRCS = $(TARGET).c
-OBJS = $(SRCS:%c=%o)
+OBJS = $(SRCS:c=o)
+
 LANGUAGES = ja fr
-
 LOCALEDIR = locale
-
 POTFILE = po/$(TARGET).pot
 POFILES = $(addsuffix .po, $(addprefix po/, $(LANGUAGES)))
 MOFILES = $(POFILES:%.po=%.mo)
