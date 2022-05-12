@@ -7,10 +7,49 @@ locale     ja_JP.UTF-8 xx
 Result     Success     x x
            Failure      x x
 
-# Primary
-        xgettext                 msginit                 msgfmt
-hello.c ----------> po/hello.pot -------> po/ja/hello.po -----> locale/ja/LC_MESSAGES/hello.mo
+# mo ファイルの Create/Update
 
-# Update
-        xgettext -j              msgmerge                msgfmt
-hello.c ----------> po/hello.pot -------> po/ja/hello.po -----> locale/ja/LC_MESSAGES/hello.mo
+あたらしいロケールの mo ファイルを Create 、または Update するフローを説明する。
+Create/Update ともに make all することで必要な処理が行われる。
+
+## Create
+
+あたらしいロケールに対応するためのフロー。 
+
+        xgettext               msginit            msgfmt
+hello.c --------> po/hello.pot --------> po/ja.po ------> po/ja.mo
+
+## Update
+
+既存のロケールについて更新する際のフロー。
+
+        xgettext               msgmerge           msgfmt
+hello.c --------> po/hello.pot --------> po/ja.po ------> po/ja.mo
+
+# PO ファイルの編集
+
+次のコメントのように ', Fuzzy' が含まれているエントリーは無視されるようだ。その翻訳エントリーが完了したら
+', Fuzzy' を削除するとよいだろう。
+
+例
+#, Fuzzy, c-format
+以下のように, Fuzzy を削除する
+#, c-format
+
+# 制約
+
+locale -a の出力に含まれる値を LANG に設定しなければならない。もし利用したいロケールが
+存在しない場合は、次の（システムにロケールを追加する）を参照すること。
+
+ただし次の様に encoding の記述についてのゆらぎは認められているようだ。
+ja_JP.utf8
+ja_JP.UTF-8
+
+# システムにロケールを追加する
+
+たとえば fr を追加するには以下のようにすればよい。
+# locale-gen fr
+
+# 日付の表示
+
+TODO.

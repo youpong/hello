@@ -18,6 +18,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: hello.c:17
-#, fuzzy, c-format
+#, c-format
 msgid "Hello World!\n"
 msgstr "Bonjour le monde!\n"
