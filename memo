@@ -53,3 +53,7 @@ ja_JP.UTF-8
 # 日付の表示
 
 TODO.
+
+# dependencies
+
+apt install gettext gettext-el
